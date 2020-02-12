@@ -1,6 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include "hardware.h"
+
 #include "elevator_cart.h"
 
 
@@ -23,16 +21,25 @@ void start_elevator(){
         exit(1);
     }
   
-  //assert(get_floor_number() =< 0);
-  //assert(get_floor_number() > HARDWARE_NUMBER_OF FLOORS); //Hvis heisen er mellom 1 og 4 så vil den ikke gå videre. 
-  
   while (get_floor_number() == 0){
-      hardware_command_movemnet(HARDWARE_MOVEMENT_UP);
+      hardware_command_movement(HARDWARE_MOVEMENT_UP);
   }
+  hardware_command_movement(HARDWARE_MOVEMENT_STOP);
 }
 
 
+void open_door(){
+  /*do {
+    int time = 3000;
+    clock_t start_time = clock();
 
-
+    while(clock() < start_time + time) {
+      hardware_command_door_open(1);
+      break;
+    } 
+  } while (!hardware_read_obstruction);
+  
+  hardware_command_door_open(0); */
+}
 
 
