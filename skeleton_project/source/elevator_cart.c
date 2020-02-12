@@ -13,6 +13,7 @@ int get_floor_number(){
       return 3;
   else if (hardware_read_floor_sensor(3))
       return 4;
+  else return 0;
 }
 
 void start_elevator(){
@@ -25,7 +26,7 @@ void start_elevator(){
   //assert(get_floor_number() =< 0);
   //assert(get_floor_number() > HARDWARE_NUMBER_OF FLOORS); //Hvis heisen er mellom 1 og 4 så vil den ikke gå videre. 
   
-  while (get_floor_number() =< 0 && get_floor_number() > HARDWARE_NUMBER_OF FLOORS){
+  while (get_floor_number() == 0){
       hardware_command_movemnet(HARDWARE_MOVEMENT_UP);
   }
 }
