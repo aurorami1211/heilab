@@ -15,7 +15,11 @@ void updateQueue(){
         		int a = floor+1;
         		printf("%d",a);
         	}
-        	Q_MATRIX[floor][0] = hardware_read_order(floor, button);
+		Q_MATRIX[floor][0] = hardware_read_order(floor, button);
+		
+		if(hardware_read_floor_sensor(floor){ //when you arrive at floor. Deletes the order. 
+			Q_MATRIX[floor][button] = 0; 
+		}
         }
     }
 }
