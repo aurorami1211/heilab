@@ -1,3 +1,5 @@
+#include <door.h>
+
 void open_door(){
   do {
     int time = 3000;
