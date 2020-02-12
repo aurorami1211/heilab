@@ -6,16 +6,16 @@
 
 
 void updateQueue(){
-	int i;
-	HardwareOrder j; 
+	int floor;
+	HardwareOrder button; 
 
-    for (i = 0; i < HARDWARE_NUMBER_OF_FLOORS; ++i){
-        for (j = HARDWARE_ORDER_UP; j <= HARDWARE_ORDER_DOWN; ++j){ //Hardwareorders
-        	if (hardware_read_order(i, j)){
-        		//int a = i+1;
-        		printf("%d",i);
+    for (floor = 0; floor < HARDWARE_NUMBER_OF_FLOORS; ++floor){
+        for (button = HARDWARE_ORDER_UP; button <= HARDWARE_ORDER_DOWN; ++button){ //Hardwareorders
+        	if (hardware_read_order(floor, button)){
+        		int a = floor+1;
+        		printf("%d",a);
         	}
-        	Q_MATRIX[i][0] = hardware_read_order(i, j);
+        	Q_MATRIX[floor][0] = hardware_read_order(floor, button);
         }
     }
 }
