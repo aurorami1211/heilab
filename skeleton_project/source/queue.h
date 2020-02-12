@@ -2,20 +2,8 @@
 #include <stdlib.h>
 #include "hardware.h"
 
-#DEFINE 
+#define Q_MATRIX
 
-int width = 5;
-int height = 5;
-int** queueMatrix = malloc int*[width];
-for(int i = 0; i < width; ++i){
-   queueMatrix[i] = malloc int[height];
-}
+int Q_MATRIX[3][4], i, j;
 
-class Queue{
-    private:
-        int** queueMatrix;
-    public:
-        void updateQueue()
-        Queue();
-    
-}
+void updateQueue(); 
