@@ -3,6 +3,7 @@
 #include "hardware.h"
 #include "elevator_cart.h"
 #include "queue.h"
+#include "motorControl.h"
 
 
 
@@ -13,52 +14,102 @@ int main(){
 
     start_elevator();
 
+
+
     while(1){
 
         switch(elevator_state){
             case IDLE:
-                if(hardware_read_stop_signal()){
-                    elevator_state = STOP;
-                }
+                check_stop();
                 update_queue();
-                elevator_state  = MOVING_UP;
+                set_prev_floor();
+                set_destination_up();
+               if(empty_queue()){
+                    elevator_state = IDLE;
+                }
+                else if (get_floor_number() == -1 && destination == prev_floor){
+                    if (prev_dir == UP){
+                        elevator_state = MOVING_DOWN;
+                    }
+                    else if (prev_dir == DOWN){
+                        elevator_state = MOVING_UP;
+                    }
+                }
+                else if(prev_floor==3){
+                    prev_dir = DOWN;
+                    elevator_state = MOVING_DOWN;
+                }else if(prev_floor==0){
+                    prev_dir = UP;
+                    elevator_state  = MOVING_UP;
+                }else{
+                    set_moving_state();
+                }
+
                 break;
+
             case MOVING_UP:
-                hardware_command_movement(HARDWARE_MOVEMENT_UP);
-                if (get_floor_number() != -1){
-                    elevator_state = DOOR_OPEN;
-                }
-                /*else if(hardware_read_floor_sensor(0)){
+                set_destination_up();
+                while(get_floor_number() != destination){
+                    if(hardware_read_stop_signal()){
+                        elevator_state = STOP;
+                        break;
+                    }
                     hardware_command_movement(HARDWARE_MOVEMENT_UP);
+                    update_queue();
+                    set_destination_up_moving();
+                    set_prev_floor();
                 }
-                else if(hardware_read_floor_sensor(HARDWARE_NUMBER_OF_FLOORS - 1)){
-                    hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
-                }*/
-                /*if (!hardware_read_stop_signal()){
-                    elevator_state = MOVING_UP; //ENDRE TIL IDLE
-                }*/
+                elevator_state = DOOR_OPEN;
+                if(hardware_read_stop_signal()){
+                        elevator_state = STOP;
+                        break;
+                    }
+
                 break;
             case MOVING_DOWN:
+                 set_destination_down();
+                while(get_floor_number() != destination){
+                    if(hardware_read_stop_signal()){
+                        elevator_state = STOP;
+                        break;
+                    }
+                    hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
+                   check_stop();
+                    update_queue();
+                    set_prev_floor();
+                    set_destination_down_moving();
+                }
+                elevator_state = DOOR_OPEN;
+                if(hardware_read_stop_signal()){
+                        elevator_state = STOP;
+                        break;
+                }
+        
                 break;
             case STOP:
-                reset_queue();
                 hardware_command_movement(HARDWARE_MOVEMENT_STOP);
                 if (!hardware_read_stop_signal()){
                     elevator_state = IDLE; //ENDRE TIL IDLE
                 }
+                reset_queue();
                 break;
             case DOOR_OPEN:
+                check_stop();
+                update_queue();
+                set_prev_floor();
                 hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+
                 open_door();
-                elevator_state = MOVING_UP;
+                delete_order(destination);
+                elevator_state = IDLE;
                 break;
         }
 
         //updateQueue();
-        if (hardware_read_obstruction_signal()){
-            break;
-        }
+        
+
     }
+
 
     int floor;
     HardwareOrder button; 

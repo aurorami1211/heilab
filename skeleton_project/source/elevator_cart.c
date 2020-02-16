@@ -1,5 +1,6 @@
 
 #include "elevator_cart.h"
+#
 
 
 int get_floor_number(){
@@ -14,6 +15,12 @@ int get_floor_number(){
   else return -1;
 }
 
+void set_prev_floor(){
+  if (get_floor_number() != -1){
+    prev_floor = get_floor_number();
+  }
+}
+
 void start_elevator(){
    int error = hardware_init();
    if(error != 0){
@@ -21,26 +28,39 @@ void start_elevator(){
         exit(1);
     }
   
-  while (get_floor_number() == -1){
-      hardware_command_movement(HARDWARE_MOVEMENT_UP);
+  while (get_floor_number() != 0){
+      hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
   }
   hardware_command_movement(HARDWARE_MOVEMENT_STOP);
   elevator_state = IDLE;
+  prev_floor = 0;
 }
 
 
 void open_door(){
+  clock_t start_time = clock();
   do {
-    int time = 3000;
-    clock_t start_time = clock();
-    hardware_command_door_open(1);
-    while(clock() < start_time + time) {
-      hardware_command_floor_indicator_on(get_floor_number());
-      break;
-    } 
-  } while (hardware_read_obstruction_signal());
+    hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+    update_queue();
+    if(hardware_read_stop_signal()){
+        elevator_state = STOP;
+        break;
+    }
+
+    if (hardware_read_obstruction_signal()){
+        start_time = clock();
+    }
+    check_stop();
+
+
+  } while (clock()-start_time < 3*CLOCKS_PER_SEC);
   
   hardware_command_door_open(0);
+  }
+
+
+void check_stop(){
+  if(hardware_read_stop_signal()){
+    elevator_state = STOP;
+  }
 }
-
-

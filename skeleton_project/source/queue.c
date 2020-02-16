@@ -33,4 +33,19 @@ void reset_queue(){
     }
 }
 
+bool empty_queue(){
+    for (int floor = 0; floor < HARDWARE_NUMBER_OF_FLOORS; ++floor){
+        for (HardwareOrder button = HARDWARE_ORDER_UP; button <= HARDWARE_ORDER_DOWN; ++button){ //Hardwareorders
+            if (Q_MATRIX[floor][button] == 1){
+                return false;
+            } 
+        }
+    }
+    return true;
+}
  
+void delete_order(int floor){
+    for (HardwareOrder button = HARDWARE_ORDER_UP; button <= HARDWARE_ORDER_DOWN; ++button){ //Hardwareo
+        Q_MATRIX[floor][button] = 0;
+}
+}
