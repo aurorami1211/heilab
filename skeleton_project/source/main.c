@@ -95,7 +95,7 @@ int main(){
 
                 open_door();
                 delete_order(TheElevator.destination);
-                elevator_state = IDLE;
+                TheElevator.state = IDLE;
                 break;
         }
     }

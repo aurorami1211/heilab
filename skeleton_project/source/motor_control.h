@@ -8,10 +8,7 @@
 
 
 
-typedef enum{
-	UP,
-	DOWN,
-}direction;
+
 
 void set_moving_state();
 

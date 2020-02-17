@@ -23,7 +23,7 @@ void set_moving_state(){
         set_destination_up();
         set_destination_down();
         if (TheElevator.prev_direction == UP){
-            if (TheElevator.destination <= prev_floor){
+            if (TheElevator.destination <= TheElevator.prev_floor){
                 TheElevator.state = MOVING_DOWN;
             }
             else{
@@ -31,7 +31,7 @@ void set_moving_state(){
             }
         }
         else {
-            if (destination >= prev_floor){
+            if (TheElevator.destination >= TheElevator.prev_floor){
                 TheElevator.state = MOVING_UP;
             }
             else{
@@ -42,7 +42,7 @@ void set_moving_state(){
     }
     else if(TheElevator.prev_floor == 3){
         TheElevator.prev_direction = DOWN;
-        TheElevator.elevator_state = MOVING_DOWN;
+        TheElevator.state = MOVING_DOWN;
     }
     else if(TheElevator.prev_floor==0){
         TheElevator.prev_direction = UP;
@@ -65,7 +65,7 @@ void set_moving_state_middle_floors(){
             }
         }
         TheElevator.prev_direction = DOWN;
-        TheElevator.elevator_state = MOVING_DOWN;
+        TheElevator.state = MOVING_DOWN;
         return;
     }
     else{
@@ -78,7 +78,7 @@ void set_moving_state_middle_floors(){
             }
         }
         TheElevator.prev_direction = UP;
-        TheElevator.elevator_state = MOVING_UP;
+        TheElevator.state = MOVING_UP;
     }
 }
 

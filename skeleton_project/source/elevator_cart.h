@@ -8,6 +8,11 @@
 #include "motor_control.h"
 #include "lights.h"
 
+typedef enum{
+	UP,
+	DOWN,
+}direction;
+
 typedef enum {
 	IDLE,
 	DOOR_OPEN,
@@ -16,16 +21,16 @@ typedef enum {
 	STOP,
 }states;
 
-struct Elevator_cart{
+typedef struct Elevator_cart{
 	direction prev_direction;
 	int prev_floor;
 	int destination;
 	
 	states state;
 
-}
+}Elevator_cart;
 
-Elevator_cart TheElevator;
+extern Elevator_cart TheElevator;
 
 
 int get_floor_number();
