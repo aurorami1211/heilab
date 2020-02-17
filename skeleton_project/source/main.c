@@ -26,7 +26,7 @@ int main(){
 
 
             case MOVING_UP:
-                if (get_floor_number() == 3){
+                if (get_floor_number() == HARDWARE_NUMBER_OF_FLOORS - 1){
                     TheElevator.state = IDLE;
                     break;
                 }
