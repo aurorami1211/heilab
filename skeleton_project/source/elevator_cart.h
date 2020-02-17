@@ -5,7 +5,8 @@
 #include "hardware.h"
 #include <time.h>
 #include "queue.h"
-#include "motorControl.h"
+#include "motor_control.h"
+#include "lights.h"
 
 typedef enum {
 	IDLE,
@@ -13,9 +14,19 @@ typedef enum {
 	MOVING_DOWN,
 	MOVING_UP,
 	STOP,
-}state;
+}states;
 
-state elevator_state; 
+struct Elevator_cart{
+	direction prev_direction;
+	int prev_floor;
+	int destination;
+	
+	states state;
+
+}
+
+Elevator_cart TheElevator;
+
 
 int get_floor_number();
 

@@ -11,19 +11,17 @@
 typedef enum{
 	UP,
 	DOWN,
-}dir;
-
-
-dir prev_dir;
-
-int destination;
+}direction;
 
 void set_moving_state();
 
+void set_moving_state_middle_floors();
+
+
 void set_destination_up();
 
-void set_destination_up_moving();
+void set_destination_up_while_moving();
 
 void set_destination_down();
 
-void set_destination_down_moving();
+void set_destination_down_while_moving();

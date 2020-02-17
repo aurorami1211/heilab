@@ -17,7 +17,7 @@ int get_floor_number(){
 
 void set_prev_floor(){
   if (get_floor_number() != -1){
-    prev_floor = get_floor_number();
+    TheElevator.prev_floor = get_floor_number();
   }
 }
 
@@ -32,8 +32,8 @@ void start_elevator(){
       hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
   }
   hardware_command_movement(HARDWARE_MOVEMENT_STOP);
-  elevator_state = IDLE;
-  prev_floor = 0;
+  TheElevator.state = IDLE;
+  TheElevator.prev_floor = 0;
 }
 
 
@@ -42,11 +42,12 @@ void open_door(){
   do {
     hardware_command_movement(HARDWARE_MOVEMENT_STOP);
     update_queue();
+    set_lights();
     if(hardware_read_stop_signal()){
-        elevator_state = STOP;
+        TheElevator.state = STOP;
         break;
     }
-
+    hardware_command_door_open(1);
     if (hardware_read_obstruction_signal()){
         start_time = clock();
     }
@@ -61,6 +62,6 @@ void open_door(){
 
 void check_stop(){
   if(hardware_read_stop_signal()){
-    elevator_state = STOP;
+    TheElevator.state = STOP;
   }
 }

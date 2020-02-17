@@ -3,128 +3,111 @@
 #include "hardware.h"
 #include "elevator_cart.h"
 #include "queue.h"
-#include "motorControl.h"
+#include "motor_control.h"
+#include "lights.h"
 
 
 
 int main(){
-    //printf("Press the stop button on the elevator panel to exit\n");
-
-    //hardware_command_movement(HARDWARE_MOVEMENT_UP);
 
     start_elevator();
 
-
-
     while(1){
 
-        switch(elevator_state){
+        switch(TheElevator.state){
             case IDLE:
                 check_stop();
                 update_queue();
                 set_prev_floor();
-                set_destination_up();
-               if(empty_queue()){
-                    elevator_state = IDLE;
-                }
-                else if (get_floor_number() == -1 && destination == prev_floor){
-                    if (prev_dir == UP){
-                        elevator_state = MOVING_DOWN;
-                    }
-                    else if (prev_dir == DOWN){
-                        elevator_state = MOVING_UP;
-                    }
-                }
-                else if(prev_floor==3){
-                    prev_dir = DOWN;
-                    elevator_state = MOVING_DOWN;
-                }else if(prev_floor==0){
-                    prev_dir = UP;
-                    elevator_state  = MOVING_UP;
-                }else{
-                    set_moving_state();
-                }
+                set_lights();
 
+                set_moving_state();
                 break;
 
+
             case MOVING_UP:
+                if (get_floor_number() == 3){
+                    TheElevator.state = IDLE;
+                    break;
+                }
                 set_destination_up();
-                while(get_floor_number() != destination){
+                while(get_floor_number() != TheElevator.destination){
+                    update_queue();
+                    set_destination_up_while_moving();
+                    set_prev_floor();
+                    set_lights();
                     if(hardware_read_stop_signal()){
-                        elevator_state = STOP;
+                        TheElevator.state = STOP;
                         break;
                     }
                     hardware_command_movement(HARDWARE_MOVEMENT_UP);
-                    update_queue();
-                    set_destination_up_moving();
-                    set_prev_floor();
                 }
-                elevator_state = DOOR_OPEN;
-                if(hardware_read_stop_signal()){
-                        elevator_state = STOP;
-                        break;
-                    }
-
+                set_prev_floor();
+                TheElevator.prev_direction = UP;
+                TheElevator.state = DOOR_OPEN;
+                check_stop();
                 break;
+
             case MOVING_DOWN:
-                 set_destination_down();
-                while(get_floor_number() != destination){
+                if (get_floor_number() == 0){
+                    TheElevator.state = IDLE;
+                    break;
+                }
+                set_destination_down();
+                while(get_floor_number() != TheElevator.destination){
+                    check_stop();
+                    update_queue();
+                    set_prev_floor();
+                    set_destination_down_while_moving();
+                    set_lights();
                     if(hardware_read_stop_signal()){
-                        elevator_state = STOP;
+                        TheElevator.state = STOP;
                         break;
                     }
                     hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
-                   check_stop();
-                    update_queue();
-                    set_prev_floor();
-                    set_destination_down_moving();
                 }
-                elevator_state = DOOR_OPEN;
-                if(hardware_read_stop_signal()){
-                        elevator_state = STOP;
-                        break;
-                }
+                set_prev_floor();
+                TheElevator.prev_direction = DOWN;
+                TheElevator.state = DOOR_OPEN;
+                check_stop();
         
                 break;
+
+
             case STOP:
-                hardware_command_movement(HARDWARE_MOVEMENT_STOP);
-                if (!hardware_read_stop_signal()){
-                    elevator_state = IDLE; //ENDRE TIL IDLE
-                }
                 reset_queue();
+                set_lights();
+                hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+
+                while (hardware_read_stop_signal()){
+                    set_prev_floor();
+                }
+                TheElevator.state = IDLE;
                 break;
+
+
             case DOOR_OPEN:
                 check_stop();
                 update_queue();
+                set_lights();
                 set_prev_floor();
                 hardware_command_movement(HARDWARE_MOVEMENT_STOP);
 
                 open_door();
-                delete_order(destination);
+                delete_order(TheElevator.destination);
                 elevator_state = IDLE;
                 break;
         }
-
-        //updateQueue();
-        
-
     }
 
-
-    int floor;
-    HardwareOrder button; 
-
-    for (floor = 0; floor < HARDWARE_NUMBER_OF_FLOORS; ++floor){
+    /*
+    for (int floor = 0; HardwareOder floor < HARDWARE_NUMBER_OF_FLOORS; ++floor){
         printf(" (");
-        /*printf("floor ");
-
-        printf("%d", floor);
-        printf(": ");*/
         for (button = HARDWARE_ORDER_UP; button <= HARDWARE_ORDER_DOWN; ++button){
             //printf("button ");
             //printf("%d", button);
             printf("%d     ", Q_MATRIX[floor][button]);
         }
         printf(")\n");
-    }
+    }*/
 }

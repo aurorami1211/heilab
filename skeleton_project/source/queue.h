@@ -2,17 +2,13 @@
 
 #include <stdbool.h>
 
-unsigned int Q_MATRIX[4][3];
-
-int prev_floor;
-
-
+unsigned int Q_MATRIX[HARDWARE_NUMBER_OF_FLOORS][3];
 
 
 void update_queue(); 
 
 void reset_queue();
 
-bool empty_queue();
+bool check_empty_queue();
 
 void delete_order(int floor);
