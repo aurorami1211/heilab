@@ -1,6 +1,6 @@
-<mxfile host="www.draw.io" modified="2020-02-21T15:57:37.813Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36" etag="ZzLaL-GIBAUj-y1QwLfU" version="12.7.3" type="github">
+<mxfile host="www.draw.io" modified="2020-02-27T10:18:36.511Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36" etag="uWP1ooUGbFn8WYp9ci1C" version="12.7.8" type="github">
   <diagram name="Page-1" id="58cdce13-f638-feb5-8d6f-7d28b1aa9fa0">
-    <mxGraphModel dx="1952" dy="1342" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" background="#ffffff" math="0" shadow="0">
+    <mxGraphModel dx="2108" dy="1256" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" background="#ffffff" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -181,7 +181,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="vARx-QSnKT3jjr5TEnCY-7" value="At a floor[stop unpushed] eller motsatt?" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=#ffffff;" parent="vARx-QSnKT3jjr5TEnCY-6" vertex="1" connectable="0">
+        <mxCell id="vARx-QSnKT3jjr5TEnCY-7" value="At a floor[stop unpushed]" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=#ffffff;" parent="vARx-QSnKT3jjr5TEnCY-6" vertex="1" connectable="0">
           <mxGeometry x="-0.5714" y="66" relative="1" as="geometry">
             <mxPoint x="66" y="-66" as="offset" />
           </mxGeometry>
